@@ -14,20 +14,34 @@ spec:
         name: oauth2-proxy
         namespace: flux-system
   values:
-    # Uses your existing Secret (fill later / SOPS later)
-    config:
-      existingSecret: oauth2-proxy-secret
+    # Map the Secret keys to the env vars oauth2-proxy expects
+    extraEnv:
+      - name: OAUTH2_PROXY_CLIENT_ID
+        valueFrom:
+          secretKeyRef:
+            name: oauth2-proxy-secret
+            key: client-id
+      - name: OAUTH2_PROXY_CLIENT_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: oauth2-proxy-secret
+            key: client-secret
+      - name: OAUTH2_PROXY_COOKIE_SECRET
+        valueFrom:
+          secretKeyRef:
+            name: oauth2-proxy-secret
+            key: cookie-secret
 
     extraArgs:
       provider: github
       email-domain: "*"
       cookie-secure: "true"
       redirect-url: "https://dashboard.amha.dev/oauth2/callback"
+      upstream: "static://200"    # auth-only mode
 
     service:
       portNumber: 4180
 
-    # Expose only the oauth endpoints on the SAME host
     ingress:
       enabled: true
       className: nginx
@@ -35,6 +49,3 @@ spec:
       pathType: Prefix
       hosts:
         - dashboard.amha.dev
-      # tls:
-      #   - hosts: [ dashboard.amha.dev ]
-      #     secretName: dashboard-tls
