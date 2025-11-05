@@ -1,0 +1,40 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: oauth2-proxy
+  namespace: headlamp
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: oauth2-proxy
+      version: 7.x.x
+      sourceRef:
+        kind: HelmRepository
+        name: oauth2-proxy
+        namespace: flux-system
+  values:
+    # Uses your existing Secret (fill later / SOPS later)
+    config:
+      existingSecret: oauth2-proxy-secret
+
+    extraArgs:
+      provider: github
+      email-domain: "*"
+      cookie-secure: "true"
+      redirect-url: "https://dashboard.amha.dev/oauth2/callback"
+
+    service:
+      portNumber: 4180
+
+    # Expose only the oauth endpoints on the SAME host
+    ingress:
+      enabled: true
+      className: nginx
+      path: /oauth2
+      pathType: Prefix
+      hosts:
+        - dashboard.amha.dev
+      # tls:
+      #   - hosts: [ dashboard.amha.dev ]
+      #     secretName: dashboard-tls
