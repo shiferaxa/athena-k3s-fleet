@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: headlamp
+  namespace: headlamp
+  annotations:
+    # Gate everything behind oauth2-proxy
+    nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.headlamp.svc.cluster.local:4180/oauth2/auth"
+    nginx.ingress.kubernetes.io/auth-signin: "https://dashboard.amha.dev/oauth2/start?rd=$escaped_request_uri"
+    nginx.ingress.kubernetes.io/auth-response-headers: "X-Auth-Request-Email, X-Auth-Request-User"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "16k"
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: dashboard.amha.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: headlamp       # if your Service name differs, put it here
+                port:
+                  number: 80         # if your Service uses a different port, adjust
+

@@ -7,3 +7,4 @@ resources:
   - oauth2-proxy-helmrelease.yaml
   - headlamp-helmrelease.yaml
   - rbac-readonly.yaml
+  - ingress-headlamp.yaml
