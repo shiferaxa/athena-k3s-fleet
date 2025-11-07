@@ -37,7 +37,19 @@ spec:
       email-domain: "*"
       cookie-secure: "true"
       redirect-url: "https://dashboard.amha.dev/oauth2/callback"
-      upstream: "static://200"    # auth-only mode
+      upstream: "static://200" # auth-only mode
+      
+      # === CRITICAL FIXES FOR HTTPS/CLOUDFLARE/GITHUB ===
+      # 1. Trust headers from Ingress/Tunnel (e.g., X-Forwarded-Proto)
+      set-xauthrequest: true 
+      
+      # 2. Forces proxy to generate all redirects/cookies using HTTPS 
+      #    even though the internal connection is HTTP. (Fixes GitHub 404/redirect errors)
+      upstream-https: true
+      
+      # 3. Explicitly setting the modern GitHub endpoints (Prevents login 404)
+      login-url: "https://github.com/login/oauth/authorize"
+      redeem-url: "https://github.com/login/oauth/access_token"
 
     service:
       portNumber: 4180
