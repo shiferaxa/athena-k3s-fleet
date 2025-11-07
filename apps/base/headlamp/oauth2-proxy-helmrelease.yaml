@@ -5,7 +5,6 @@ metadata:
   namespace: headlamp
   # === FIX: RESOLVES HELM PATCH CONFLICT ERROR ===
   annotations: 
-    # Force replacement of the resource before upgrade to resolve the $setElementOrder list error
     helm.sh/hook-delete-policy: before-hook-creation
     kustomize.toolkit.fluxcd.io/reconcile: "changed"
 spec:
@@ -44,17 +43,11 @@ spec:
       redirect-url: "https://dashboard.amha.dev/oauth2/callback"
       upstream: "static://200" # auth-only mode
       
-      # === FIXES FOR HTTPS/CLOUDFLARE/GITHUB ===
-      # 1. Trust headers from Ingress/Tunnel (e.g., X-Forwarded-Proto)
+      # === CLOUDFLARE/HTTPS FIXES REMAINING ===
       set-xauthrequest: true 
-      
-      # 2. CRITICAL FIX: Forces proxy to generate all redirects/cookies using HTTPS, 
-      #    solving the GitHub 404/redirect errors (protocol mismatch).
       upstream-https: true
       
-      # 3. Explicitly setting the modern GitHub endpoints (Prevents initial login 404)
-      login-url: "https://github.com/login/oauth/authorize"
-      redeem-url: "https://github.com/login/oauth/access_token"
+      # login-url and redeem-url REMOVED to prevent validation errors
 
     service:
       portNumber: 4180
