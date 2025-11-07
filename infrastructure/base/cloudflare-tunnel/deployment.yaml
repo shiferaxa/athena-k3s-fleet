@@ -30,9 +30,9 @@ spec:
               key: token
         livenessProbe:
           httpGet:
-            path: /ready
-            port: 2000
-          failureThreshold: 1
+            path: /metrics
+            port: 20241
+          failureThreshold: 3
           initialDelaySeconds: 10
           periodSeconds: 10
         ports:
