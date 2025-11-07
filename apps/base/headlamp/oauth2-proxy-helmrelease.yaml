@@ -3,10 +3,6 @@ kind: HelmRelease
 metadata:
   name: oauth2-proxy
   namespace: headlamp
-  # === FIX: RESOLVES HELM PATCH CONFLICT ERROR ===
-  annotations: 
-    helm.sh/hook-delete-policy: before-hook-creation
-    kustomize.toolkit.fluxcd.io/reconcile: "changed"
 spec:
   interval: 10m
   chart:
@@ -18,44 +14,34 @@ spec:
         name: oauth2-proxy
         namespace: flux-system
   values:
-    # Map the Secret keys to the env vars oauth2-proxy expects
     extraEnv:
-      - name: OAUTH2_PROXY_CLIENT_ID
-        valueFrom:
-          secretKeyRef:
-            name: oauth2-proxy-secret
-            key: client-id
-      - name: OAUTH2_PROXY_CLIENT_SECRET
-        valueFrom:
-          secretKeyRef:
-            name: oauth2-proxy-secret
-            key: client-secret
-      - name: OAUTH2_PROXY_COOKIE_SECRET
-        valueFrom:
-          secretKeyRef:
-            name: oauth2-proxy-secret
-            key: cookie-secret
-
+    - name: OAUTH2_PROXY_CLIENT_ID
+      valueFrom:
+        secretKeyRef:
+          name: oauth2-proxy-secret
+          key: client-id
+    - name: OAUTH2_PROXY_CLIENT_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: oauth2-proxy-secret
+          key: client-secret
+    - name: OAUTH2_PROXY_COOKIE_SECRET
+      valueFrom:
+        secretKeyRef:
+          name: oauth2-proxy-secret
+          key: cookie-secret
     extraArgs:
       provider: github
       email-domain: "*"
       cookie-secure: "true"
       redirect-url: "https://dashboard.amha.dev/oauth2/callback"
-      upstream: "static://200" # auth-only mode
-      
-      # === CLOUDFLARE/HTTPS FIXES REMAINING ===
-      set-xauthrequest: true 
-      upstream-https: true
-      
-      # login-url and redeem-url REMOVED to prevent validation errors
-
+      upstream: "static://200"
     service:
       portNumber: 4180
-
     ingress:
       enabled: true
       className: nginx
       path: /oauth2
       pathType: Prefix
       hosts:
-        - dashboard.amha.dev
+      - dashboard.amha.dev
