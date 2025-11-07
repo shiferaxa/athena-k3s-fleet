@@ -5,6 +5,7 @@ metadata:
   namespace: headlamp
 spec:
   interval: 10m
+  timeout: 10m
   chart:
     spec:
       chart: oauth2-proxy
@@ -14,6 +15,10 @@ spec:
         name: oauth2-proxy
         namespace: flux-system
   values:
+    config:
+      clientID: ""
+      clientSecret: ""
+      cookieSecret: ""
     extraEnv:
     - name: OAUTH2_PROXY_CLIENT_ID
       valueFrom:
@@ -37,7 +42,8 @@ spec:
       redirect-url: "https://dashboard.amha.dev/oauth2/callback"
       upstream: "static://200"
     service:
-      portNumber: 4180
+      type: ClusterIP
+      port: 4180
     ingress:
       enabled: true
       className: nginx
