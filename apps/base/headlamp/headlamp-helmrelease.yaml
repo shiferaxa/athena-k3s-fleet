@@ -24,7 +24,7 @@ spec:
         memory: 128Mi
 
     ingress:
-      enabled: true
+      enabled: false
       className: nginx
       annotations:
         nginx.ingress.kubernetes.io/auth-url: "http://oauth2-proxy.headlamp.svc.cluster.local:4180/oauth2/auth"
