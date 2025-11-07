@@ -3,7 +3,6 @@ kind: Kustomization
 namespace: headlamp
 resources:
   - namespace.yaml
-  - oauth2-proxy-secret.yaml
   - oauth2-proxy-helmrelease.yaml
   - headlamp-helmrelease.yaml
   - rbac-readonly.yaml
