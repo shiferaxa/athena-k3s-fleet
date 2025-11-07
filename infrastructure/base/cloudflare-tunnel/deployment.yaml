@@ -36,5 +36,5 @@ spec:
           initialDelaySeconds: 10
           periodSeconds: 10
         ports:
-        - containerPort: 8080
+        - containerPort: 20241
           name: health-check
