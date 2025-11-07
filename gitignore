@@ -1,0 +1,76 @@
+# Secrets and sensitive data
+*.secret
+*.key
+*.pem
+*.crt
+*.pfx
+*.p12
+*.jks
+*.keystore
+*.truststore
+secret.yaml
+secrets.yaml
+*-secret.yaml
+*-secrets.yaml
+secret-*.yaml
+secrets-*.yaml
+
+# Environment files with credentials
+.env
+.env.*
+*.env
+
+# Kubernetes secrets (unsealed)
+*secret*.yaml
+*Secret*.yaml
+
+# Token files
+token
+*.token
+*-token
+*-token.*
+
+# Credentials
+credentials
+credentials.*
+*.credentials
+
+# Private keys
+*_rsa
+*_dsa
+*_ecdsa
+*_ed25519
+id_rsa
+id_dsa
+id_ecdsa
+id_ed25519
+
+# Certificate files
+*.cer
+*.der
+
+# Password files
+password
+passwords
+*.password
+*.passwords
+
+# Auth configs
+auth.yaml
+auth.json
+.dockerconfigjson
+
+# Sealed secrets private keys (if accidentally placed here)
+sealed-secrets-key*.yaml
+
+# Backup files that might contain secrets
+*.bak
+*.backup
+*.old
+*~
+
+# Temporary files
+*.tmp
+*.temp
+.DS_Store
+Thumbs.db
