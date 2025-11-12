@@ -16,7 +16,11 @@ spec:
     serviceAccount:
       create: true
       name: headlamp
-
+    
+    persistence:
+      enabled: true
+      existingClaim: headlamp-data  
+      
     replicaCount: 1
     resources:
       requests:

@@ -6,3 +6,4 @@ resources:
   - headlamp-helmrelease.yaml
   - rbac-readonly.yaml
   - ingress-headlamp.yaml
+  - storage.yaml
